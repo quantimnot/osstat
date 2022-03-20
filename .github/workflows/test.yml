@@ -99,6 +99,38 @@ jobs:
             ls -lah
             whoami
             env | sort
+  test-solaris:
+    runs-on: macos-latest
+    needs: test-ubuntu-macos-win
+    # env:
+    #   MYTOKEN : ${{ secrets.MYTOKEN }}
+    #   MYTOKEN2: "value2"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Test in solaris
+      id: test
+      uses: vmactions/solaris-vm@v0.0.3
+      with:
+        # envs: 'MYTOKEN MYTOKEN2'
+        prepare: pkgutil -y -i socat
+        nat: |
+          "8080": "80"
+          "8443": "443"
+          udp:"8081": "80"
+        run: |
+          if [ -n "test" ]; then
+            echo "false"
+          fi
+          if [ "test" ]; then
+            echo "test"
+          fi
+          pwd
+          ls -lah
+          whoami
+          env
+          psrinfo -vp
+          cat /etc/release
+          echo "OK"
   test-haiku:
     runs-on: ubuntu-latest
     container: 'docker.io/hectormolinero/qemu-haiku:latest'
