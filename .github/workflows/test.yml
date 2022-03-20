@@ -20,11 +20,12 @@ concurrency:
   group: test
   cancel-in-progress: true
 
-# on:
+on:
 #   # pull_request:
 #   #   types: [ assigned, opened, synchronize, reopened ]
-#   push:
-#     branches:
+  push:
+    branches:
+      - master
 #       - test-github-actions
 
 jobs:
