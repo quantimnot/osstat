@@ -79,8 +79,8 @@ jobs:
         os:
           - name: openbsd
             version: '6.9'
-          - name: freebsd
-            version: '13.0'
+          # - name: freebsd
+          #   version: '13.0'
           - name: netbsd
             version: '9.2'
     steps:
@@ -135,6 +135,17 @@ jobs:
   #         psrinfo -vp
   #         cat /etc/release
   #         echo "OK"
+
+  # test-android:
+  #   # https://github.com/ReactiveCircus/android-emulator-runner
+  #   runs-on: macos-latest
+  #   needs: test-ubuntu-macos-win
+
+  # test-ios:
+  #   # https://github.com/marketplace/actions/ios-build-action
+  #   # https://github.com/futureware-tech/simulator-action
+  #   runs-on: macos-latest
+  #   needs: test-ubuntu-macos-win
 
   test-haiku:
     runs-on: ubuntu-latest
