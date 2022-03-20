@@ -83,7 +83,7 @@ jobs:
             version: '9.2'
     steps:
       - name: Test on ${{ matrix.os.name }}
-        uses: quantimnot/action
+        uses: quantimnot/action@head
         # env:
           # MY_ENV1: MY_ENV1
           # MY_ENV2: MY_ENV2
