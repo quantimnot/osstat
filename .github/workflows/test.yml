@@ -1,0 +1,51 @@
+name: test
+
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+# https://docs.github.com/en/actions/reference
+# https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+# https://docs.github.com/en/actions/guides/storing-workflow-data-as-artifacts
+# https://github.github.io/actions-cheat-sheet/actions-cheat-sheet.pdf
+# https://github.com/actions/checkout
+# https://github.com/actions/cache
+#
+# TODO:
+#   - better caching: https://stackoverflow.com/questions/59269850/caching-apt-packages-in-github-actions-workflow
+#   - Create a test result branch: `REPO/test-results`.
+#   - Commit test outputs to the test result branch.
+# https://stackoverflow.com/questions/57921401/push-to-origin-from-github-action/58393457#58393457
+
+
+concurrency:
+  group: test
+  cancel-in-progress: true
+
+# on:
+#   # pull_request:
+#   #   types: [ assigned, opened, synchronize, reopened ]
+#   push:
+#     branches:
+#       - test-github-actions
+
+jobs:
+  noskipci:
+    runs-on: ubuntu-latest
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    steps:
+      - run: echo "not contains '[skip ci]'"test-haiku:
+  test-haiku:
+    name: 'Test on Haiku'
+    runs-on: 'ubuntu-latest'
+    container: 'docker.io/hectormolinero/qemu-haiku:latest'
+    needs: noskipci
+    steps:
+      - name: 'Wait until the VM is ready'
+        run: 'container-init & timeout 600 vmshell exit 0'
+      - name: 'Install packages'
+        run: 'vmshell pkgman install -y make'
+      - name: 'Checkout project'
+        uses: 'actions/checkout@main'
+      - name: 'Copy project to VM'
+        run: 'vmshell mkdir ./src/; tar -cf - ./ | vmshell tar -xf - -C ./src/'
+      - name: 'Test project'
+        run: 'vmshell make -C ./src/ test'
