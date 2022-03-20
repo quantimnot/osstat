@@ -69,9 +69,9 @@ jobs:
         run: 'true #make -C ./src/ test'
   test-haiku:
     name: 'Test on Haiku'
-    runs-on: 'test-linux-macos-win'
+    runs-on: ubuntu-latest
     container: 'docker.io/hectormolinero/qemu-haiku:latest'
-    needs: test-linux
+    needs: test-linux-macos-win
     steps:
       - name: 'Wait until the VM is ready'
         run: 'container-init & timeout 600 vmshell exit 0'
