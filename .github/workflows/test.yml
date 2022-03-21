@@ -69,7 +69,7 @@ jobs:
           export PATH=/home/runner/.nimble/bin:$PATH
           choosenim ${{ matrix.nim }}
       - id: run-tests
-        run: 'ls -l #make -C ./src/ test'
+        run: 'pwd; ls -l; #make -C ./src/ test'
 
   test-freebsd-netbsd-openbsd:
     runs-on: ubuntu-latest
